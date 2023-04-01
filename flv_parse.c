@@ -1,9 +1,24 @@
 /*
 ===================================INFO===================================
-    Packet_Type:
-        8 - audio
-        9 - video
-        18 - script data
+Header:
+    Signature   - byte[3]   - FLV (default)
+    Version     - uint8     - 1 (default)
+    Flags       - uint8     - 0x05 (default)
+    Header Size - uint32_be - 9 (default)
+
+Pack:
+    Size of previous packet - uint32_be
+    Packet Type             - uint8
+    Payload Size            - uint24_be
+    Timestamp Lower         - uint24_be
+    Timestamp Upper         - uint8
+    Stream ID               - uint24_be
+    Payload Data            - uint8*
+
+Packet_Type:
+    8 - audio
+    9 - video
+    18 - script data
 ===================================INFO===================================
 */
 
@@ -23,7 +38,7 @@
 #define SIZEOF_TIMESTAMPLOWER 3 // from doc
 #define SIZEOF_STREAMID 3       // from doc
 #define SIZEOF_FLV_HEADER SIZEOF_SIGNATURE + SIZEOF_CHAR + SIZEOF_CHAR + __SIZEOF_INT__
-#define SIZEOF_FLV_PACK_HEADER __SIZEOF_INT__ + SIZEOF_CHAR + SIZEOF_PAYLOADSIZE + SIZEOF_TIMESTAMPLOWER + 1 + SIZEOF_STREAMID
+#define SIZEOF_FLV_PACK_HEADER __SIZEOF_INT__ + SIZEOF_CHAR + SIZEOF_PAYLOADSIZE + SIZEOF_TIMESTAMPLOWER + SIZEOF_CHAR + SIZEOF_STREAMID
 
 #define OFFSET_HEADER_SIZE_BE SIZEOF_SIGNATURE + SIZEOF_CHAR + SIZEOF_CHAR
 #define OFFSET_HEADER_VERSION SIZEOF_SIGNATURE
